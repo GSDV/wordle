@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8">
+<link rel="stylesheet" href="wordle.css">
+<title>Wordle</title>
+</head>
+
+<body>
+<div id="end-pop-up">
+	<div id="pop-up-content">
+		<h3 id="win-text">You got it!</h3>
+		<h3 id="random-word-pop-up">Wordle</h3>
+		<div id="close-pop-up" onclick="closePopUp()">Close</div>
+	</div>
+</div>
+
+
+<h1>WORDLE</h1>
+
+<div id="resetButton" class="keys specialKeys" onclick="resetGame()">Reset</div>
+
+<div class="row">
+	<div class="glow-background" id="b11"><div class="letter-box" id="i11"></div></div>
+	<div class="glow-background" id="b12"><div class="letter-box" id="i12"></div></div>
+	<div class="glow-background" id="b13"><div class="letter-box" id="i13"></div></div>
+	<div class="glow-background" id="b14"><div class="letter-box" id="i14"></div></div>
+	<div class="glow-background" id="b15"><div class="letter-box" id="i15"></div></div>
+
+	<div class="glow-background" id="b21"><div class="letter-box" id="i21"></div></div>
+	<div class="glow-background" id="b22"><div class="letter-box" id="i22"></div></div>
+	<div class="glow-background" id="b23"><div class="letter-box" id="i23"></div></div>
+	<div class="glow-background" id="b24"><div class="letter-box" id="i24"></div></div>
+	<div class="glow-background" id="b25"><div class="letter-box" id="i25"></div></div>
+	
+	<div class="glow-background" id="b31"><div class="letter-box" id="i31"></div></div>
+	<div class="glow-background" id="b32"><div class="letter-box" id="i32"></div></div>
+	<div class="glow-background" id="b33"><div class="letter-box" id="i33"></div></div>
+	<div class="glow-background" id="b34"><div class="letter-box" id="i34"></div></div>
+	<div class="glow-background" id="b35"><div class="letter-box" id="i35"></div></div>
+	
+	<div class="glow-background" id="b41"><div class="letter-box" id="i41"></div></div>
+	<div class="glow-background" id="b42"><div class="letter-box" id="i42"></div></div>
+	<div class="glow-background" id="b43"><div class="letter-box" id="i43"></div></div>
+	<div class="glow-background" id="b44"><div class="letter-box" id="i44"></div></div>
+	<div class="glow-background" id="b45"><div class="letter-box" id="i45"></div></div>
+
+	<div class="glow-background" id="b51"><div class="letter-box" id="i51"></div></div>
+	<div class="glow-background" id="b52"><div class="letter-box" id="i52"></div></div>
+	<div class="glow-background" id="b53"><div class="letter-box" id="i53"></div></div>
+	<div class="glow-background" id="b54"><div class="letter-box" id="i54"></div></div>
+	<div class="glow-background" id="b55"><div class="letter-box" id="i55"></div></div>
+</div>
+
+
+<div class="keyboard">
+	<div class="keyboard-row">
+		<div class="keys" id='Q'>Q</div>
+		<div class="keys" id='W'>W</div>
+		<div class="keys" id='E'>E</div>
+		<div class="keys" id='R'>R</div>
+		<div class="keys" id='T'>T</div>
+		<div class="keys" id='Y'>Y</div>
+		<div class="keys" id='U'>U</div>
+		<div class="keys" id='I'>I</div>
+		<div class="keys" id='O'>O</div>
+		<div class="keys" id='P'>P</div>
+	</div>
+	<div class="keyboard-row">
+		<div class="keys" id='A'>A</div>
+		<div class="keys" id='S'>S</div>
+		<div class="keys" id='D'>D</div>
+		<div class="keys" id='F'>F</div>
+		<div class="keys" id='G'>G</div>
+		<div class="keys" id='H'>H</div>
+		<div class="keys" id='J'>J</div>
+		<div class="keys" id='K'>K</div>
+		<div class="keys" id='L'>L</div>
+	</div>
+	<div class="keyboard-row">
+		<div id="Enter" class="keys specialKeys">Enter</div>
+		<div class="keys" id='Z'>Z</div>
+		<div class="keys" id='X'>X</div>
+		<div class="keys" id='C'>C</div>
+		<div class="keys" id='V'>V</div>
+		<div class="keys" id='B'>B</div>
+		<div class="keys" id='N'>N</div>
+		<div class="keys" id='M'>M</div>
+		<div id="Backspace" class="keys specialKeys">Delete</div>
+	</div>
+</div>
+
+
+
+<script src="wordle.js"></script>
+<script>
+// console.log("Did you really think the word would be here?");
+console.log("No cheating :)");
+
+
+// DELAY FUNCTION
+const delay = millis => new Promise((resolve, reject) => {
+    setTimeout(_ => resolve(), millis)
+});
+
+
+
+// VAR SET UP
+var currentRow;
+var currentBox;
+
+var randomWord;
+var wordLetters = [];
+var userWordLetters = [];
+var userWord = "";
+
+var keyboardKeys = [
+	'Q',
+	'W',
+	'E',
+	'R',
+	'T',
+	'Y',
+	'U',
+	'I',
+	'O',
+	'P',
+	'A',
+	'S',
+	'D',
+	'F',
+	'G',
+	'H',
+	'J',
+	'K',
+	'L',
+	'Enter',
+	'Z',
+	'X',
+	'C',
+	'V',
+	'B',
+	'N',
+	'M',
+	'Backspace'
+];
+
+
+
+// RESET THE GAME
+async function resetGame() {
+	toggleButtons(false);
+
+	currentRow = 1;
+	currentBox = 1;
+	userWordLetters = [];
+	userWord = "";
+
+	for(var r=1; r<=5; r++){ for(var b=1; b<=5; b++){
+		document.getElementById("i"+r+b).innerHTML = "";
+		document.getElementById("b"+r+b).style.backgroundColor = "";
+		
+		if(document.getElementById("b"+r+b).classList.contains("glowing-background-ac")){ document.getElementById("b"+r+b).classList.toggle("glowing-background-ac"); }
+		if(document.getElementById("b"+r+b).classList.contains("second-flip-box")){ document.getElementById("b"+r+b).classList.toggle("second-flip-box"); }
+	}}
+
+	// Outisde of for loop because if they are inside, the grid of boxes will not have the same timing on their glowing animation
+	// await delay(1);
+	for(var t=1; t<=5; t++){ for(var o=1; o<=5; o++){ document.getElementById("b"+t+o).classList.toggle("glowing-background-ac"); }}
+
+	randomWord = allWords[Math.floor(Math.random()*allWords.length)];
+	for (var i=0; i<5; i++) {
+		wordLetters.push(randomWord.substring(i, i+1));
+	}
+
+	toggleButtons(true);
+}
+
+
+// FUNCTION FOR WHEN KEY IS PRESSED
+function keyTyped(l) {
+	if (l == "Backspace") {
+		if (currentBox > 1) {
+			userWordLetters.pop();
+			currentBox--;
+			document.getElementById("i"+currentRow+currentBox).innerHTML = "";
+		}
+	}
+
+	else if (l == "Enter") {
+		if (checkIfRealWord()) {
+			guessWord();
+		}
+		else {
+			shakeAnimation();
+		}
+	}
+
+	else {
+		if (currentBox < 6 && "QWERTYUIOPASDFGHJKLZXCVBNM".includes(l.toUpperCase())) {
+			userWordLetters.push(l.toUpperCase());
+			document.getElementById("i"+currentRow+currentBox).innerHTML = l.toUpperCase();
+			currentBox++;
+		}
+	}
+}
+
+
+// CHECK IF USER GUESS IS VALID
+function checkIfRealWord() {
+	for (var i=0; i<userWordLetters.length; i++) {
+		userWord += userWordLetters[i].toLowerCase();
+	}
+
+	for (var i=0; i<allWords.length; i++) {
+		if(allWords[i] == userWord){ return true; }
+	}
+
+	userWord = "";
+	return false;
+}
+
+
+// CHECK IF USER GOT RIGHT WORD
+async function guessWord() {
+	toggleButtons(false);
+
+	for (var i=0; i<5; i++) {
+		document.getElementById("b" + currentRow + (i+1)).classList.toggle("glowing-background-ac");
+		document.getElementById("b" + currentRow + (i+1)).classList.toggle("first-flip-box");
+		await delay(250);
+		document.getElementById("b" + currentRow + (i+1)).classList.toggle("first-flip-box");
+		document.getElementById("b" + currentRow + (i+1)).classList.toggle("second-flip-box");
+
+		if (userWord.substring(i, i+1) == randomWord.substring(i, i+1)) {
+			document.getElementById("b" + currentRow + (i+1)).style.backgroundColor = "#93faaf";
+		}
+		else if (randomWord.indexOf(userWord.substring(i, i+1)) != -1) {
+			document.getElementById("b" + currentRow + (i+1)).style.backgroundColor = "#f0bb59";
+		}
+		else {
+			document.getElementById("b" + currentRow + (i+1)).style.backgroundColor = "#f05959";
+		}
+	}
+
+	checkIfGameOver();
+
+	userWord = "";
+	for (var l=0; l<6; l++) {
+		userWordLetters.pop();
+	}
+	currentBox = 1;
+	currentRow++;
+}
+
+
+// CHECK IF GAME IS OVER
+function checkIfGameOver() {
+	if (userWord == randomWord) {
+		toggleButtons(false);
+		document.getElementById("win-text").innerHTML = "You got it!";
+		document.getElementById("random-word-pop-up").innerHTML = "Word: " + randomWord.toUpperCase();
+		displayPopUp();
+	}
+	else if (currentRow == 5) {
+		toggleButtons(false);
+		document.getElementById("win-text").innerHTML = "You lost!";
+		document.getElementById("random-word-pop-up").innerHTML = "Word: " + randomWord.toUpperCase();
+		displayPopUp();
+	}
+	else {
+		toggleButtons(true);
+	}
+	document.getElementById("resetButton").onclick = function() {resetGame()};
+	document.getElementById("resetButton").style.cursor = 'pointer';
+}
+
+
+// SHAKE ANIMATION WHEN USER'S WORD DOES NOT MEET REQUIREMENTS
+async function shakeAnimation() {
+	toggleButtons(false);
+
+	for(var i=0; i<5; i++){ document.getElementById("b" + currentRow + (i+1)).classList.toggle("shake-ac"); }
+	await delay(400);
+	for(var i=0; i<5; i++){ document.getElementById("b" + currentRow + (i+1)).classList.toggle("shake-ac"); }
+
+	toggleButtons(true);
+}
+
+
+// TOGGLE ALL BUTTONS (KEYS)
+function toggleButtons(b) {
+    if (b) {
+        keyboardKeys.forEach(k => {
+            document.getElementById(k).onclick = function() {keyTyped(this.id)};
+            document.getElementById(k).style.cursor = 'pointer';
+        });
+        document.addEventListener('keydown', typingListener);
+        document.getElementById("resetButton").onclick = function() {resetGame()};
+        document.getElementById("resetButton").style.cursor = 'pointer';
+    }
+    else {
+        keyboardKeys.forEach(k => {
+            document.getElementById(k).onclick = function() {};
+            document.getElementById(k).style.cursor = 'no-drop';
+        });
+        document.removeEventListener('keydown', typingListener);
+        document.getElementById("resetButton").onclick = function() {};
+        document.getElementById("resetButton").style.cursor = 'no-drop';
+    }
+}
+const typingListener = (e) => {
+    keyTyped(e.key);
+}
+
+
+
+// POP UP FUNCTIONS
+var popUpBox = document.getElementById("end-pop-up");
+function displayPopUp() { popUpBox.style.display = "block"; }
+function closePopUp() { popUpBox.style.display = "none"; }
+window.onclick = function(event) {
+    if (event.target == popUpBox) closePopUp();
+}
+
+
+
+// SET UP THE GAME
+resetGame();
+</script>
+</body>
+</html>

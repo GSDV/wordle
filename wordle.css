@@ -1,0 +1,211 @@
+* {
+	box-sizing: border-box;
+    user-select: none;
+    font-family: Verdana;
+}
+:root {
+    --glow-color: #b217eb;
+    --second-glow-color: #db8df7;
+}
+
+body {
+    padding: 0px;
+    background-color: black;
+}
+
+
+/* TEXT CSS */
+h1 {
+    margin: 5px 0px;
+	text-align: center;
+	font-size: 40px;
+	color: white;
+	animation: glowing-text 1s ease-in-out infinite alternate;
+}
+@keyframes glowing-text {
+	0% {text-shadow: 0 0 10px #ffffff, 0 0 20px #ffffff, 0 0 30px var(--glow-color), 0 0 40px var(--glow-color), 0 0 50px var(--glow-color), 0 0 60px var(--glow-color), 0 0 70px var(--glow-color);}
+	100% {text-shadow: 0 0 20px #ffffff, 0 0 30px var(--second-glow-color), 0 0 40px var(--second-glow-color), 0 0 50px var(--second-glow-color), 0 0 60px var(--second-glow-color), 0 0 70px var(--second-glow-color), 0 0 80px var(--second-glow-color);}
+}
+
+
+/* FORMATTING CSS */
+.row {
+    margin: 0 auto;
+    width: fit-content;
+    -moz-width: fit-content;
+    display: grid;
+    grid-template-columns: repeat(5, auto);
+    grid-template-rows: auto;
+    grid-gap: 12pt 5pt;
+    justify-content: center;
+}
+.glow-background {
+    position: relative;
+    transform-origin: top center;
+    width: 65px;
+    height: 65px;
+    border-radius: 25%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.letter-box {
+    border-radius: 25%;
+    width: 85%;
+    height: 85%;
+    background-color: black;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 43px;
+    font-weight: 900;
+    color: white;
+}
+
+
+/* GLOWING ANIMATION */
+.glowing-background-ac {
+    animation: rainbow-background-color 1s infinite alternate;
+}
+@keyframes rainbow-background-color {
+    0% {background-color: white;}
+    100% {background-color: var(--second-glow-color);}
+}
+
+
+/* FLIPPING ANIMATIONS */
+.first-flip-box {
+    animation: f-flip-card-ani 0.25s forwards, rainbow-background-color 1s infinite alternate;
+}
+@keyframes f-flip-card-ani {
+    0% {transform: rotateY(0deg) scaleX(1);}
+    100% {transform: rotateY(90deg) scaleX(0);}
+}
+.second-flip-box {
+    animation: s-flip-card-ani 0.25s forwards;
+}
+@keyframes s-flip-card-ani {
+    0% {transform: rotateY(90deg) scaleX(0);}
+    100% {transform: rotateY(180deg) scaleX(-1);}
+}
+
+
+/* SHAKE ANIMATION */
+.shake-ac {
+    animation: shake 0.1s infinite, rainbow-background-color 1s infinite alternate;
+}
+@keyframes shake {
+    0% {left: 0px;}
+    25% {left: -5px;}
+    75% {left: 5px;}
+    100% {left: 0px;}
+}
+
+
+/* KEYBOARD CSS */
+.keyboard {
+    margin: 30px auto;
+    width: fit-content;
+    -moz-width: fit-content;
+    display: flex;
+    flex-direction: column;
+}
+.keyboard-row {
+    margin: 5px auto;
+    display: flex;
+    flex-direction: row;
+}
+.keys {
+    margin: 5px;
+    width: min(55px, 6vw);
+    height: min(55px, 6vw);
+    border-radius: 25%;
+	cursor: pointer;
+    
+    animation: rainbow-background-color 1s infinite alternate;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: min(40px, 4vw);
+    font-family: Verdana;
+    font-weight: 900;
+}
+.specialKeys {
+    padding: 0px 10px;
+    width: fit-content;
+    -moz-width: fit-content;
+    border-radius: 15px;
+}
+#resetButton {
+    position: absolute;
+    top: 10pt;
+    left: 10pt;
+}
+
+
+/* END GAME POP UP */
+#end-pop-up {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding-top: 100px;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.4);
+    display: none;
+    overflow: auto;
+    z-index: 3;
+}
+#pop-up-content {
+    position: relative;
+    margin: 0px auto 50px auto;
+    padding: 20px 100px;
+    width: fit-content;
+    -moz-width: fit-content;
+    height: fit-content;
+    -moz-height: fit-content;
+    justify-content: flex-start;
+    border-radius: 20px;
+    background-color: black;
+    text-align: center;
+    box-shadow: 8px 10px 15px 5px rgba(0, 0, 0, 0.63);
+    animation: pop-up-animation 0.4s;
+    user-select: text;
+    animation: pop-up-border-color 1s infinite alternate;
+}
+#end-pop-up h3 {
+    margin: 15px auto;
+    color: white;
+    font-size: 35px;
+}
+@keyframes pop-up-animation {
+    0% {top: -300px; opacity: 0;}
+    100% {top: 0; opacity: 1;}
+}
+
+#close-pop-up {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 50px;
+    border-radius: 20px;
+    background-color: black;
+    color: white;
+    text-align: center;
+    font-size: 30px;
+    font-weight: 900;
+    animation: pop-up-border-color 1s infinite alternate;
+}
+#close-pop-up:hover {
+    cursor: pointer;
+}
+
+@keyframes pop-up-border-color {
+    0% {border: 6px solid white;}
+    100% {border: 6px solid var(--glow-color);}
+}
