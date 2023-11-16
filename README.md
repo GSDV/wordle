@@ -1,7 +1,7 @@
-# Wordle
+# Wordle!
 HTML Wordle with nice CSS animations and visuals.
 
-## How to Run
+## Setup
 Simply run
  ```bash
  git clone https://github.com/GSDV/wordle.git
