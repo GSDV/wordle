@@ -1,4 +1,4 @@
-# Wordle!
+# Wordle
 HTML Wordle with nice CSS animations and visuals.
 
 ## Setup
